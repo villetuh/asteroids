@@ -9,20 +9,11 @@ namespace Asteroids.Levels
     /// </summary>
     public class Level
     {
-        public Player Player { get; private set; }
+        public Player Player { get; set; }
 
-        public List<Bullet> Bullets { get; private set; } = new List<Bullet>();
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
 
-        public List<Asteroid> Asteroids { get; private set; } = new List<Asteroid>();
-
-        public Level(Player player)
-        {
-            if (player == null)
-            {
-                throw new ArgumentNullException(nameof(player), $"{nameof(Level)} requires reference to {nameof(Player)}.");
-            }
-            Player = player;
-        }
+        public List<Asteroid> Asteroids { get; set; } = new List<Asteroid>();
 
         public void AddBullet(Bullet bullet)
         {

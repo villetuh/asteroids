@@ -15,6 +15,11 @@ namespace Asteroids.Levels
         public void CreateLevel();
 
         /// <summary>
+        /// Clears current level of all game objects.
+        /// </summary>
+        public void ClearLevel();
+
+        /// <summary>
         /// Method used to update the level based on current time.
         /// </summary>
         /// <param name="time"></param>

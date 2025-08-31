@@ -1,4 +1,5 @@
 using Asteroids.Entities;
+using System;
 using UnityEngine;
 
 namespace Asteroids
@@ -8,6 +9,21 @@ namespace Asteroids
     /// </summary>
     public interface IGameController
     {
+        /// <summary>
+        /// Event invoked when game state changes.
+        /// </summary>
+        public Action<GameState> OnGameStateChanged { get; set; }
+
+        /// <summary>
+        /// Start a new game
+        /// </summary>
+        public void StartGame();
+
+        /// <summary>
+        /// End current game.
+        /// </summary>
+        public void EndGame();
+
         /// <summary>
         /// Event invoked when player performs a fire action.
         /// </summary>

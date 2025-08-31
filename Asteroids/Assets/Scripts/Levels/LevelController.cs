@@ -50,7 +50,38 @@ namespace Asteroids.Levels
         public void CreateLevel()
         {
             var player = playerFactory.CreatePlayer();
-            level = new Level(player);
+            level = new Level()
+            {
+                Player = player
+            };
+        }
+
+        /// <inheritdoc cref="ILevelController.ClearLevel" />
+        public void ClearLevel()
+        {
+            if (level == null)
+            {
+                return;
+            }
+
+            foreach (var asteroid in level.Asteroids)
+            {
+                asteroidFactory.DestroyAsteroid(asteroid);
+            }
+            level.Asteroids.Clear();
+
+            foreach (var bullet in level.Bullets)
+            {
+                bulletFactory.DestroyBullet(bullet);
+            }
+            level.Bullets.Clear();
+
+            if (level.Player != null)
+            {
+                playerFactory.DestroyPlayer(level.Player);
+                level.Player = null;
+            }
+            level = null;
         }
 
         /// <inheritdoc cref="ILevelController.UpdateLevel(float)" />
@@ -96,6 +127,7 @@ namespace Asteroids.Levels
         public void HandlePlayerHit(Asteroid asteroid)
         {
             playerFactory.DestroyPlayer(level.Player);
+            level.Player = null;
 
             HandleAsteroidHit(asteroid);
         }

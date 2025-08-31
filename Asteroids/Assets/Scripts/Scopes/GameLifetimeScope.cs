@@ -3,6 +3,7 @@ using Asteroids.Entities;
 using Asteroids.Factories;
 using Asteroids.Input;
 using Asteroids.Levels;
+using Asteroids.UI;
 using Asteroids.Utilities;
 using UnityEngine;
 using VContainer;
@@ -36,6 +37,7 @@ namespace Asteroids.Scopes
 
             // Scene object references
             builder.RegisterComponentInHierarchy<Camera>();
+            builder.RegisterComponentInHierarchy<GameUIController>();
 
             // Factories
             builder.Register<PlayerFactory>(Lifetime.Scoped).As<IPlayerFactory>();
