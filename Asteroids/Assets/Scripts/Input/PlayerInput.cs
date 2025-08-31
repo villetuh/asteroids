@@ -1,4 +1,5 @@
 using Asteroids.Entities;
+using Asteroids.Utilities;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +12,7 @@ namespace Asteroids.Input
     /// </summary>
     public class PlayerInput : IPlayerInput, ITickable
     {
+        private readonly ITimeProvider timeProvider;
         private readonly InputAction moveInputAction;
         private readonly InputAction fireInputAction;
 
@@ -29,8 +31,11 @@ namespace Asteroids.Input
         /// <inheritdoc cref="IPlayerInput.OnFire" />
         public Action OnFire { get; set; }
 
-        public PlayerInput()
+        public PlayerInput(ITimeProvider timeProvider)
         {
+            this.timeProvider = timeProvider
+                ?? throw new ArgumentNullException(nameof(timeProvider), $"{nameof(PlayerInput)} requires reference to {nameof(ITimeProvider)}.");
+
             moveInputAction = InputSystem.actions.FindAction("Move")
                 ?? throw new ArgumentNullException($"{nameof(PlayerInput)} couldn't find Move action");
 
@@ -84,7 +89,7 @@ namespace Asteroids.Input
         {
             if (fireInputAction.IsPressed())
             {
-                var currentTime = Time.time;
+                var currentTime = timeProvider.Time;
                 if (currentTime - previousFireTime > fireCooldown)
                 {
                     OnFire?.Invoke();

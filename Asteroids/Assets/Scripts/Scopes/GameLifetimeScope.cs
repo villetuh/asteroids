@@ -44,6 +44,7 @@ namespace Asteroids.Scopes
 
             // Other components
             builder.Register<ScreenEdgeSpawner>(Lifetime.Scoped);
+            builder.Register<TimeProvider>(Lifetime.Scoped).As<ITimeProvider>();
         }
     }
 }

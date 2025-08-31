@@ -1,4 +1,5 @@
 using Asteroids.Input;
+using Asteroids.Utilities;
 using System;
 using UnityEngine;
 using VContainer;
@@ -11,6 +12,7 @@ namespace Asteroids.Entities
     public class Player : MonoBehaviour, IGameEntity, IDisposable
     {
         private IGameController gameController;
+        private ITimeProvider timeProvider;
         private IPlayerInput playerInput;
 
         private RotationDirection rotationDirection = RotationDirection.None;
@@ -37,10 +39,13 @@ namespace Asteroids.Entities
         public Vector2 Speed { get; private set; }
 
         [Inject]
-        private void Construct(IGameController gameController, IPlayerInput playerInput)
+        private void Construct(IGameController gameController, ITimeProvider timeProvider, IPlayerInput playerInput)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Player)} requires reference to {nameof(IGameController)}.");
+
+            this.timeProvider = timeProvider
+                ?? throw new System.ArgumentNullException(nameof(timeProvider), $"{nameof(Player)} requires reference to {nameof(ITimeProvider)}.");
 
             this.playerInput = playerInput
                 ?? throw new System.ArgumentNullException(nameof(playerInput), $"{nameof(Player)} requires reference to {nameof(IPlayerInput)}.");
@@ -83,7 +88,7 @@ namespace Asteroids.Entities
             if (rotationDirection != RotationDirection.None)
             {
                 var rotationDirectionValue = rotationDirection == RotationDirection.Left ? 1.0f : -1.0f;
-                rotation += (float)rotationDirectionValue * rotationSpeed * Time.deltaTime;
+                rotation += (float)rotationDirectionValue * rotationSpeed * timeProvider.DeltaTime;
                 rotation = rotation % 360.0f;
             }
 
@@ -96,7 +101,7 @@ namespace Asteroids.Entities
             if (thrusting)
             {
                 var thrustVector = thrustPower * GetDirection(rotation);
-                speed += thrustVector * Time.deltaTime;
+                speed += thrustVector * timeProvider.DeltaTime;
 
                 if (speed.magnitude > thrustPower)
                 {
@@ -105,7 +110,7 @@ namespace Asteroids.Entities
             }
             else
             {
-                speed *= Mathf.Pow(drag, Time.deltaTime);
+                speed *= Mathf.Pow(drag, timeProvider.DeltaTime);
 
                 if (speed.magnitude < 0.01f)
                 {
@@ -121,7 +126,7 @@ namespace Asteroids.Entities
             var position = (Vector2)transform.position;
             if (speed != Vector2.zero)
             {
-                position += Speed * Time.deltaTime;
+                position += Speed * timeProvider.DeltaTime;
             }
             return position;
         }

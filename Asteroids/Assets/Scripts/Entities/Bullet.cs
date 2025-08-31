@@ -1,3 +1,4 @@
+using Asteroids.Utilities;
 using UnityEngine;
 using VContainer;
 
@@ -9,6 +10,7 @@ namespace Asteroids.Entities
     public class Bullet : MonoBehaviour, IGameEntity
     {
         private IGameController gameController;
+        private ITimeProvider timeProvider;
 
         private readonly float bulletSpeed = 10.0f; // units per second
         private readonly float bulletLifetime = 3.0f; // seconds
@@ -30,10 +32,13 @@ namespace Asteroids.Entities
         public Vector2 Speed { get; private set; }
 
         [Inject]
-        private void Construct(IGameController gameController)
+        private void Construct(IGameController gameController, ITimeProvider timeProvider)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Bullet)} requires reference to {nameof(IGameController)}.");
+
+            this.timeProvider = timeProvider
+                ?? throw new System.ArgumentNullException(nameof(timeProvider), $"{nameof(Bullet)} requires reference to {nameof(ITimeProvider)}.");
         }
 
         public void SetPositionAndDirection(Vector2 position, Vector2 direction)
@@ -41,12 +46,12 @@ namespace Asteroids.Entities
             transform.SetPositionAndRotation(position, transform.rotation);
             Speed = bulletSpeed * direction;
 
-            createTime = Time.time;
+            createTime = timeProvider.Time;
         }
 
         public void Update()
         {
-            if (IsMaxLifeTimeReached(Time.time))
+            if (IsMaxLifeTimeReached(timeProvider.Time))
             {
                 gameController.OnBulletExpired(this);
                 return;
@@ -62,7 +67,7 @@ namespace Asteroids.Entities
             var position = (Vector2)transform.position;
             if (speed != Vector2.zero)
             {
-                position += Speed * Time.deltaTime;
+                position += Speed * timeProvider.DeltaTime;
             }
             return position;
         }

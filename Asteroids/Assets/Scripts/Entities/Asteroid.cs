@@ -1,3 +1,4 @@
+using Asteroids.Utilities;
 using UnityEngine;
 using VContainer;
 
@@ -20,6 +21,7 @@ namespace Asteroids.Entities
     public class Asteroid : MonoBehaviour, IGameEntity
     {
         private IGameController gameController;
+        private ITimeProvider timeProvider;
 
         private readonly float asteroidSpeed = 1.0f; // units per second
         private readonly float rotationSpeed = 20.0f; // degrees per second
@@ -42,10 +44,13 @@ namespace Asteroids.Entities
         public AsteroidSize Size { get; set; } = AsteroidSize.Undefined;
 
         [Inject]
-        private void Construct(IGameController gameController)
+        private void Construct(IGameController gameController, ITimeProvider timeProvider)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Asteroid)} requires reference to {nameof(IGameController)}.");
+
+            this.timeProvider = timeProvider
+                ?? throw new System.ArgumentNullException(nameof(timeProvider), $"{nameof(Asteroid)} requires reference to {nameof(ITimeProvider)}.");
         }
 
         public void SetSizePositionAndDirection(AsteroidSize size, Vector2 position, Vector2 direction)
@@ -71,7 +76,7 @@ namespace Asteroids.Entities
             if (rotationDirection != RotationDirection.None)
             {
                 var rotationDirectionValue = rotationDirection == RotationDirection.Left ? 1.0f : -1.0f;
-                rotation += (float)rotationDirectionValue * rotationSpeed * Time.deltaTime;
+                rotation += (float)rotationDirectionValue * rotationSpeed * timeProvider.DeltaTime;
                 rotation = rotation % 360.0f;
             }
 
@@ -83,7 +88,7 @@ namespace Asteroids.Entities
             var position = (Vector2)transform.position;
             if (speed != Vector2.zero)
             {
-                position += Speed * Time.deltaTime;
+                position += Speed * timeProvider.DeltaTime;
             }
             return position;
         }
