@@ -11,8 +11,6 @@ namespace Asteroids.Utilities
     {
         private readonly Camera camera;
 
-        private const float worldZ = 0.0f;
-
         public ScreenEdgeSpawner(Camera camera)
         {
             this.camera = camera;
@@ -40,7 +38,7 @@ namespace Asteroids.Utilities
             };
 
             // Get matching world coordinates on the gameplay plane
-            float zDistance = worldZ - camera.transform.position.z;
+            float zDistance = -camera.transform.position.z;
             Vector2 worldPosition = camera.ViewportToWorldPoint(new Vector3(viewportCoordinates.x, viewportCoordinates.y, zDistance));
 
             worldPosition += screenEdge switch

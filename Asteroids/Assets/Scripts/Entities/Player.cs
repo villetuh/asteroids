@@ -14,6 +14,7 @@ namespace Asteroids.Entities
         private IGameController gameController;
         private ITimeProvider timeProvider;
         private IPlayerInput playerInput;
+        private IScreenEdgeHelper screenEdgeHelper;
 
         private RotationDirection rotationDirection = RotationDirection.None;
         private readonly float rotationSpeed = 180.0f; // degrees per second
@@ -39,7 +40,8 @@ namespace Asteroids.Entities
         public Vector2 Speed { get; private set; }
 
         [Inject]
-        private void Construct(IGameController gameController, ITimeProvider timeProvider, IPlayerInput playerInput)
+        private void Construct(IGameController gameController, ITimeProvider timeProvider,
+            IPlayerInput playerInput, IScreenEdgeHelper screenEdgeHelper)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Player)} requires reference to {nameof(IGameController)}.");
@@ -53,6 +55,9 @@ namespace Asteroids.Entities
             playerInput.OnRotate += Rotate;
             playerInput.OnThrust += Thrust;
             playerInput.OnFire += Fire;
+
+            this.screenEdgeHelper = screenEdgeHelper
+                ?? throw new System.ArgumentNullException(nameof(screenEdgeHelper), $"{nameof(Player)} requires reference to {nameof(ScreenEdgeHelper)}.");
         }
 
         public void Rotate(RotationDirection direction)
@@ -128,6 +133,9 @@ namespace Asteroids.Entities
             {
                 position += Speed * timeProvider.DeltaTime;
             }
+
+            position = screenEdgeHelper.GetScreenWrappedPosition(position);
+
             return position;
         }
 

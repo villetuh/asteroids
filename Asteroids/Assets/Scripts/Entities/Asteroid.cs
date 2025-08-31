@@ -20,8 +20,8 @@ namespace Asteroids.Entities
     /// </summary>
     public class Asteroid : MonoBehaviour, IGameEntity
     {
-        private IGameController gameController;
         private ITimeProvider timeProvider;
+        private IScreenEdgeHelper screenEdgeHelper;
 
         private readonly float asteroidSpeed = 1.0f; // units per second
         private readonly float rotationSpeed = 20.0f; // degrees per second
@@ -44,13 +44,13 @@ namespace Asteroids.Entities
         public AsteroidSize Size { get; set; } = AsteroidSize.Undefined;
 
         [Inject]
-        private void Construct(IGameController gameController, ITimeProvider timeProvider)
+        private void Construct(ITimeProvider timeProvider, IScreenEdgeHelper screenEdgeHelper)
         {
-            this.gameController = gameController
-                ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Asteroid)} requires reference to {nameof(IGameController)}.");
-
             this.timeProvider = timeProvider
                 ?? throw new System.ArgumentNullException(nameof(timeProvider), $"{nameof(Asteroid)} requires reference to {nameof(ITimeProvider)}.");
+
+            this.screenEdgeHelper = screenEdgeHelper
+                ?? throw new System.ArgumentNullException(nameof(screenEdgeHelper), $"{nameof(Asteroid)} requires reference to {nameof(ScreenEdgeHelper)}.");
         }
 
         public void SetSizePositionAndDirection(AsteroidSize size, Vector2 position, Vector2 direction)
@@ -90,6 +90,9 @@ namespace Asteroids.Entities
             {
                 position += Speed * timeProvider.DeltaTime;
             }
+            
+            position = screenEdgeHelper.GetScreenWrappedPosition(position);
+
             return position;
         }
     }

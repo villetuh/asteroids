@@ -11,6 +11,7 @@ namespace Asteroids.Entities
     {
         private IGameController gameController;
         private ITimeProvider timeProvider;
+        private IScreenEdgeHelper screenEdgeHelper;
 
         private readonly float bulletSpeed = 10.0f; // units per second
         private readonly float bulletLifetime = 3.0f; // seconds
@@ -32,13 +33,17 @@ namespace Asteroids.Entities
         public Vector2 Speed { get; private set; }
 
         [Inject]
-        private void Construct(IGameController gameController, ITimeProvider timeProvider)
+        private void Construct(IGameController gameController, ITimeProvider timeProvider,
+            IScreenEdgeHelper screenEdgeHelper)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Bullet)} requires reference to {nameof(IGameController)}.");
 
             this.timeProvider = timeProvider
                 ?? throw new System.ArgumentNullException(nameof(timeProvider), $"{nameof(Bullet)} requires reference to {nameof(ITimeProvider)}.");
+
+            this.screenEdgeHelper = screenEdgeHelper
+                ?? throw new System.ArgumentNullException(nameof(screenEdgeHelper), $"{nameof(Bullet)} requires reference to {nameof(ScreenEdgeHelper)}.");
         }
 
         public void SetPositionAndDirection(Vector2 position, Vector2 direction)
@@ -69,6 +74,9 @@ namespace Asteroids.Entities
             {
                 position += Speed * timeProvider.DeltaTime;
             }
+
+            position = screenEdgeHelper.GetScreenWrappedPosition(position);
+
             return position;
         }
 
