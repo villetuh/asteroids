@@ -58,10 +58,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6394942187641413902, guid: 93b3ced025201ff45b74d9d926988e43, type: 3}
       propertyPath: m_Name
-      value: Asteroid_Large Variant
+      value: Asteroid_Large
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1160128013188192148, guid: 93b3ced025201ff45b74d9d926988e43, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 558044693259158936}
   m_SourcePrefab: {fileID: 100100000, guid: 93b3ced025201ff45b74d9d926988e43, type: 3}
+--- !u!1 &1702162069753759082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1160128013188192148, guid: 93b3ced025201ff45b74d9d926988e43, type: 3}
+  m_PrefabInstance: {fileID: 542350784635785982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &558044693259158936
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702162069753759082}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.6, y: 1.6}
+    newSize: {x: 1.6, y: 1.6}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.31, y: -0.57}
+      - {x: 0.37, y: -0.5}
+      - {x: 0.58, y: -0.16}
+      - {x: 0.59, y: -0.11}
+      - {x: 0.44, y: 0.13}
+      - {x: 0.59999996, y: 0.24}
+      - {x: 0.59999996, y: 0.26999998}
+      - {x: 0.59, y: 0.29999998}
+      - {x: 0.32999998, y: 0.61}
+      - {x: 0.24, y: 0.61}
+      - {x: 0.03, y: 0.45999998}
+      - {x: -0.19, y: 0.59}
+      - {x: -0.24, y: 0.59999996}
+      - {x: -0.28, y: 0.57}
+      - {x: -0.57, y: 0.29999998}
+      - {x: -0.55, y: 0.21}
+      - {x: -0.42999998, y: 0.01}
+      - {x: -0.53, y: -0.14}
+      - {x: -0.57, y: -0.22999999}
+      - {x: -0.57, y: -0.28}
+      - {x: -0.48999998, y: -0.37}
+      - {x: -0.25, y: -0.58}
+      - {x: -0.21, y: -0.58}
+      - {x: -0.089999996, y: -0.44}
+      - {x: -0.04, y: -0.47}
+      - {x: 0.13, y: -0.53}
+  m_UseDelaunayMesh: 0
