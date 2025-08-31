@@ -12,14 +12,17 @@ namespace Asteroids.Scopes
     {
         [Header("Prefab references")]
         [SerializeField] private Player playerPrefab;
+        [SerializeField] private Bullet bulletPrefab;
 
         protected override void Configure(IContainerBuilder builder)
         {
             // Prefabs
             builder.RegisterInstance(playerPrefab).Keyed("PlayerPrefab");
+            builder.RegisterInstance(bulletPrefab).Keyed("BulletPrefab");
 
             // Factories
             builder.Register<PlayerFactory>(Lifetime.Scoped).As<IPlayerFactory>();
+            builder.Register<BulletFactory>(Lifetime.Scoped).As<IBulletFactory>();
 
             // Game logic
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped).As<IGameController>();
