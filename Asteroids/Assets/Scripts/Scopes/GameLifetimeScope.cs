@@ -13,8 +13,11 @@ namespace Asteroids.Scopes
 
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterEntryPoint<PlayerInput>(Lifetime.Scoped);
-            builder.RegisterComponentInNewPrefab<Player>(playerPrefab, Lifetime.Scoped).As<IPlayerActions, IGameEntity>();
+            // Prefabs
+            builder.RegisterInstance(playerPrefab).Keyed("PlayerPrefab");
+
+            // Factories
+            builder.Register<PlayerFactory>(Lifetime.Singleton).As<IPlayerFactory>();
         }
     }
 }
