@@ -1,3 +1,4 @@
+using Asteroids.Configurations;
 using Asteroids.Entities;
 using Asteroids.Factories;
 using Asteroids.Utilities;
@@ -14,16 +15,16 @@ namespace Asteroids.Levels
         private readonly IPlayerFactory playerFactory;
         private readonly IAsteroidFactory asteroidFactory;
         private readonly IBulletFactory bulletFactory;
+        private readonly IGameSettings gameSettings;
         private readonly ScreenEdgeSpawner screenEdgeSpawner;
 
         private float levelStartTime = 0.0f;
-        private float timeBetweenAsteroidSpawns = 5.0f;
         private float lastAsteroidSpawnTime = -5.0f;
 
         private Level level;
 
         public LevelController(IPlayerFactory playerFactory, IAsteroidFactory asteroidFactory,
-            IBulletFactory bulletFactory,
+            IBulletFactory bulletFactory, IGameSettings gameSettings,
             ScreenEdgeSpawner screenEdgeSpawner)
         {
             this.playerFactory = playerFactory
@@ -34,6 +35,12 @@ namespace Asteroids.Levels
 
             this.bulletFactory = bulletFactory
                 ?? throw new ArgumentNullException(nameof(bulletFactory), $"{nameof(LevelController)} requires reference to {nameof(IBulletFactory)}.");
+
+            this.gameSettings = gameSettings;
+            if (gameSettings == null)
+            {
+                throw new ArgumentNullException(nameof(gameSettings), $"{nameof(LevelController)} requires reference to {nameof(IGameSettings)}.");
+            }
 
             this.screenEdgeSpawner = screenEdgeSpawner
                 ?? throw new ArgumentNullException(nameof(screenEdgeSpawner), $"{nameof(LevelController)} requires reference to {nameof(ScreenEdgeSpawner)}.");
@@ -54,7 +61,7 @@ namespace Asteroids.Levels
                 levelStartTime = time;
             }
 
-            if ((time - lastAsteroidSpawnTime) > timeBetweenAsteroidSpawns)
+            if ((time - lastAsteroidSpawnTime) > gameSettings.LevelSettings.TimeBetweenAsteroidSpawns)
             {
                 CreateAsteroid(AsteroidSize.Large);
                 lastAsteroidSpawnTime = time;
@@ -95,7 +102,7 @@ namespace Asteroids.Levels
 
         private Asteroid CreateAsteroid(AsteroidSize asteroidSize)
         {
-            var (position, direction) = screenEdgeSpawner.GetScreenEdgeSpawnPointAndDirection(0.5f);
+            var (position, direction) = screenEdgeSpawner.GetScreenEdgeSpawnPointAndDirection(0.0f);
             return CreateAsteroid(asteroidSize, position, direction);
         }
 

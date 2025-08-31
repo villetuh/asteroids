@@ -1,3 +1,4 @@
+using Asteroids.Configurations;
 using Asteroids.Entities;
 using Asteroids.Factories;
 using Asteroids.Input;
@@ -11,6 +12,9 @@ namespace Asteroids.Scopes
 {
     public class GameLifetimeScope : LifetimeScope
     {
+        [Header("Configurations")]
+        [SerializeField] private GameSettings gameSettings;
+
         [Header("Prefab references")]
         [SerializeField] private Player playerPrefab;
         [SerializeField] private Bullet bulletPrefab;
@@ -20,6 +24,9 @@ namespace Asteroids.Scopes
 
         protected override void Configure(IContainerBuilder builder)
         {
+            // Configurations
+            builder.RegisterInstance(gameSettings).As<IGameSettings>();
+
             // Prefabs
             builder.RegisterInstance(playerPrefab).Keyed("PlayerPrefab");
             builder.RegisterInstance(bulletPrefab).Keyed("BulletPrefab");

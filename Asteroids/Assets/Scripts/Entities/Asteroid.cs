@@ -1,3 +1,4 @@
+using Asteroids.Configurations;
 using Asteroids.Utilities;
 using UnityEngine;
 using VContainer;
@@ -22,9 +23,8 @@ namespace Asteroids.Entities
     {
         private ITimeProvider timeProvider;
         private IScreenEdgeHelper screenEdgeHelper;
+        private IGameSettings gameSettings;
 
-        private readonly float asteroidSpeed = 1.0f; // units per second
-        private readonly float rotationSpeed = 20.0f; // degrees per second
         private RotationDirection rotationDirection = RotationDirection.None;
 
         public GameEntityType EntityType => GameEntityType.Asteroid;
@@ -44,20 +44,27 @@ namespace Asteroids.Entities
         public AsteroidSize Size { get; set; } = AsteroidSize.Undefined;
 
         [Inject]
-        private void Construct(ITimeProvider timeProvider, IScreenEdgeHelper screenEdgeHelper)
+        private void Construct(ITimeProvider timeProvider, IScreenEdgeHelper screenEdgeHelper,
+                               IGameSettings gameSettings)
         {
             this.timeProvider = timeProvider
                 ?? throw new System.ArgumentNullException(nameof(timeProvider), $"{nameof(Asteroid)} requires reference to {nameof(ITimeProvider)}.");
 
             this.screenEdgeHelper = screenEdgeHelper
                 ?? throw new System.ArgumentNullException(nameof(screenEdgeHelper), $"{nameof(Asteroid)} requires reference to {nameof(ScreenEdgeHelper)}.");
+
+            this.gameSettings = gameSettings;
+            if (gameSettings == null)
+            {
+                throw new System.ArgumentNullException(nameof(gameSettings), $"{nameof(Asteroid)} requires reference to {nameof(IGameSettings)}.");
+            }
         }
 
         public void SetSizePositionAndDirection(AsteroidSize size, Vector2 position, Vector2 direction)
         {
             Size = size;
             transform.SetPositionAndRotation(position, transform.rotation);
-            Speed = asteroidSpeed * direction;
+            Speed = gameSettings.AsteroidSettings.Speed * direction;
             rotationDirection = (Random.value > 0.5f) ? RotationDirection.Left : RotationDirection.Right;
         }
 
@@ -76,7 +83,7 @@ namespace Asteroids.Entities
             if (rotationDirection != RotationDirection.None)
             {
                 var rotationDirectionValue = rotationDirection == RotationDirection.Left ? 1.0f : -1.0f;
-                rotation += (float)rotationDirectionValue * rotationSpeed * timeProvider.DeltaTime;
+                rotation += (float)rotationDirectionValue * gameSettings.AsteroidSettings.RotationSpeed * timeProvider.DeltaTime;
                 rotation = rotation % 360.0f;
             }
 

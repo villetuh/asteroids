@@ -48,6 +48,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  gameSettings: {fileID: 11400000, guid: 40b8528c287e6274db48e8c55932c7d2, type: 2}
   playerPrefab: {fileID: -6169698641793480054, guid: 9f17c4ec48b9d3e419a716e9283a9ce5, type: 3}
   bulletPrefab: {fileID: 3698341432518670960, guid: ce66e62a604e4574996f0b763985be7b, type: 3}
   asteroidLargePrefab: {fileID: 4792709327985139737, guid: 491e05668d28d9e49972f9eadc190933, type: 3}

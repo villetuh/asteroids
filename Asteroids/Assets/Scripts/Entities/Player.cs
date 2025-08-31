@@ -1,3 +1,4 @@
+using Asteroids.Configurations;
 using Asteroids.Input;
 using Asteroids.Utilities;
 using System;
@@ -15,15 +16,11 @@ namespace Asteroids.Entities
         private ITimeProvider timeProvider;
         private IPlayerInput playerInput;
         private IScreenEdgeHelper screenEdgeHelper;
+        private IGameSettings gameSettings;
 
         private RotationDirection rotationDirection = RotationDirection.None;
-        private readonly float rotationSpeed = 180.0f; // degrees per second
 
         private bool thrusting = false;
-        private readonly float thrustPower = 2.5f; // units per second
-        private readonly float drag = 0.33f; // velocity retention per second
-
-        private readonly float bulletOffset = 0.5f; // distance from player center to bullet spawn position
 
         public GameEntityType EntityType => GameEntityType.Player;
 
@@ -41,7 +38,8 @@ namespace Asteroids.Entities
 
         [Inject]
         private void Construct(IGameController gameController, ITimeProvider timeProvider,
-            IPlayerInput playerInput, IScreenEdgeHelper screenEdgeHelper)
+            IPlayerInput playerInput, IScreenEdgeHelper screenEdgeHelper,
+            IGameSettings gameSettings)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Player)} requires reference to {nameof(IGameController)}.");
@@ -58,6 +56,12 @@ namespace Asteroids.Entities
 
             this.screenEdgeHelper = screenEdgeHelper
                 ?? throw new System.ArgumentNullException(nameof(screenEdgeHelper), $"{nameof(Player)} requires reference to {nameof(ScreenEdgeHelper)}.");
+
+            this.gameSettings = gameSettings;
+            if (gameSettings == null)
+            {
+                throw new ArgumentNullException(nameof(gameSettings), $"{nameof(Player)} requires reference to {nameof(IGameSettings)}.");
+            }
         }
 
         public void Rotate(RotationDirection direction)
@@ -73,7 +77,7 @@ namespace Asteroids.Entities
         public void Fire()
         {
             var direction = GetDirection(Rotation);
-            gameController.OnPlayerFire(Position + bulletOffset * direction, direction);
+            gameController.OnPlayerFire(Position + gameSettings.PlayerSettings.BulletOffset * direction, direction);
         }
 
         public void Update()
@@ -93,7 +97,7 @@ namespace Asteroids.Entities
             if (rotationDirection != RotationDirection.None)
             {
                 var rotationDirectionValue = rotationDirection == RotationDirection.Left ? 1.0f : -1.0f;
-                rotation += (float)rotationDirectionValue * rotationSpeed * timeProvider.DeltaTime;
+                rotation += (float)rotationDirectionValue * gameSettings.PlayerSettings.RotationSpeed * timeProvider.DeltaTime;
                 rotation = rotation % 360.0f;
             }
 
@@ -103,6 +107,9 @@ namespace Asteroids.Entities
         private Vector2 GetUpdatedSpeed(float rotation, bool thrusting)
         {
             var speed = Speed;
+            var thrustPower = gameSettings.PlayerSettings.ThrustPower;
+            var drag = gameSettings.PlayerSettings.Drag;
+
             if (thrusting)
             {
                 var thrustVector = thrustPower * GetDirection(rotation);

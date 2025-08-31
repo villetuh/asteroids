@@ -1,3 +1,4 @@
+using Asteroids.Configurations;
 using Asteroids.Utilities;
 using UnityEngine;
 using VContainer;
@@ -12,9 +13,7 @@ namespace Asteroids.Entities
         private IGameController gameController;
         private ITimeProvider timeProvider;
         private IScreenEdgeHelper screenEdgeHelper;
-
-        private readonly float bulletSpeed = 10.0f; // units per second
-        private readonly float bulletLifetime = 3.0f; // seconds
+        private IGameSettings gameSettings;
 
         private float createTime = 0.0f;
 
@@ -34,7 +33,7 @@ namespace Asteroids.Entities
 
         [Inject]
         private void Construct(IGameController gameController, ITimeProvider timeProvider,
-            IScreenEdgeHelper screenEdgeHelper)
+            IScreenEdgeHelper screenEdgeHelper, IGameSettings gameSettings)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Bullet)} requires reference to {nameof(IGameController)}.");
@@ -44,12 +43,18 @@ namespace Asteroids.Entities
 
             this.screenEdgeHelper = screenEdgeHelper
                 ?? throw new System.ArgumentNullException(nameof(screenEdgeHelper), $"{nameof(Bullet)} requires reference to {nameof(ScreenEdgeHelper)}.");
+
+            this.gameSettings = gameSettings;
+            if (gameSettings == null)
+            {
+                throw new System.ArgumentNullException(nameof(gameSettings), $"{nameof(Bullet)} requires reference to {nameof(IGameSettings)}.");
+            }
         }
 
         public void SetPositionAndDirection(Vector2 position, Vector2 direction)
         {
             transform.SetPositionAndRotation(position, transform.rotation);
-            Speed = bulletSpeed * direction;
+            Speed = gameSettings.BulletSettings.Speed * direction;
 
             createTime = timeProvider.Time;
         }
@@ -82,7 +87,7 @@ namespace Asteroids.Entities
 
         private bool IsMaxLifeTimeReached(float currentTime)
         {
-            if (currentTime - createTime >= bulletLifetime)
+            if (currentTime - createTime >= gameSettings.BulletSettings.Lifetime)
             {
                 return true;
             }
