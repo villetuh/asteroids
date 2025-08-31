@@ -2,6 +2,7 @@ using Asteroids.Entities;
 using Asteroids.Factories;
 using Asteroids.Input;
 using Asteroids.Levels;
+using Asteroids.Utilities;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -26,6 +27,9 @@ namespace Asteroids.Scopes
             builder.RegisterInstance(asteroidMediumPrefab).Keyed("AsteroidMediumPrefab");
             builder.RegisterInstance(asteroidSmallPrefab).Keyed("AsteroidSmallPrefab");
 
+            // Scene object references
+            builder.RegisterComponentInHierarchy<Camera>();
+
             // Factories
             builder.Register<PlayerFactory>(Lifetime.Scoped).As<IPlayerFactory>();
             builder.Register<BulletFactory>(Lifetime.Scoped).As<IBulletFactory>();
@@ -37,6 +41,9 @@ namespace Asteroids.Scopes
 
             // Input
             builder.RegisterEntryPoint<PlayerInput>(Lifetime.Scoped).As<IPlayerInput>();
+
+            // Other components
+            builder.Register<ScreenEdgeSpawner>(Lifetime.Scoped);
         }
     }
 }
