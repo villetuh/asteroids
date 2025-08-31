@@ -10,7 +10,7 @@ namespace Asteroids
     /// <summary>
     /// Component handling main game logic.
     /// </summary>
-    public class GameController : IGameController, IStartable
+    public class GameController : IGameController, IStartable, ITickable
     {
         private readonly ILevelInitializer levelInitializer;
         private readonly IBulletFactory bulletFactory;
@@ -29,6 +29,11 @@ namespace Asteroids
         public void Start()
         {
             CreateLevel();
+        }
+
+        public void Tick()
+        {
+            levelInitializer.UpdateLevel(Time.time);
         }
 
         private void CreateLevel()

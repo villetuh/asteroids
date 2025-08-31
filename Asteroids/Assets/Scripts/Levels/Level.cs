@@ -13,6 +13,8 @@ namespace Asteroids.Levels
 
         public List<Bullet> Bullets { get; private set; } = new List<Bullet>();
 
+        public List<Asteroid> Asteroids { get; private set; } = new List<Asteroid>();
+
         public Level(Player player)
         {
             if (player == null)
@@ -38,6 +40,24 @@ namespace Asteroids.Levels
                 return;
             }
             Bullets.Remove(bullet);
+        }
+
+        public void AddAsteroid(Asteroid asteroid)
+        {
+            if (asteroid == null)
+            {
+                return;
+            }
+            Asteroids.Add(asteroid);
+        }
+
+        public void RemoveAsteroid(Asteroid asteroid)
+        {
+            if (asteroid == null)
+            {
+                return;
+            }
+            Asteroids.Remove(asteroid);
         }
     }
 }

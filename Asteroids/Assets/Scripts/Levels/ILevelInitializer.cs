@@ -10,5 +10,11 @@ namespace Asteroids.Levels
         /// </summary>
         /// <returns></returns>
         public Level CreateLevel();
+
+        /// <summary>
+        /// Method used to update the level based on current time.
+        /// </summary>
+        /// <param name="time"></param>
+        public void UpdateLevel(float time);
     }
 }
