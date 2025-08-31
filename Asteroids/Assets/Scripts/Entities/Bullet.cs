@@ -80,5 +80,14 @@ namespace Asteroids.Entities
             }
             return false;
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            var gameEntity = collision.GetComponentInParent<IGameEntity>();
+            if (gameEntity != null && gameEntity.EntityType == GameEntityType.Asteroid)
+            {
+                gameController.OnAsteroidHit(this, gameEntity as Asteroid);
+            }
+        }
     }
 }

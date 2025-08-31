@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 801525583638765406}
   - component: {fileID: 3698341432518670960}
+  - component: {fileID: -7056745827819244874}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -45,6 +46,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d141234aae2c7494989d815a72a16976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &-7056745827819244874
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5359866347901386108}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5838273127672508859
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +191,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

@@ -20,5 +20,12 @@ namespace Asteroids
         /// </summary>
         /// <param name="bullet"></param>
         public void OnBulletExpired(Bullet bullet);
+
+        /// <summary>
+        /// Event invoked when bullet hits an asteroid.
+        /// </summary>
+        /// <param name="bullet"></param>
+        /// <param name="asteroid"></param>
+        public void OnAsteroidHit(Bullet bullet, Asteroid asteroid);
     }
 }
