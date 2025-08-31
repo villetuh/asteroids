@@ -12,15 +12,15 @@ namespace Asteroids
     /// </summary>
     public class GameController : IGameController, IStartable, ITickable
     {
-        private readonly ILevelInitializer levelInitializer;
+        private readonly ILevelController levelController;
         private readonly IBulletFactory bulletFactory;
 
         private Level level;
 
-        public GameController(ILevelInitializer levelInitializer, IBulletFactory bulletFactory)
+        public GameController(ILevelController levelController, IBulletFactory bulletFactory)
         {
-            this.levelInitializer = levelInitializer
-                ?? throw new ArgumentNullException(nameof(levelInitializer), $"{nameof(GameController)} requires reference to {nameof(ILevelInitializer)}.");
+            this.levelController = levelController
+                ?? throw new ArgumentNullException(nameof(levelController), $"{nameof(GameController)} requires reference to {nameof(ILevelController)}.");
 
             this.bulletFactory = bulletFactory
                 ?? throw new ArgumentNullException(nameof(bulletFactory), $"{nameof(GameController)} requires reference to {nameof(IBulletFactory)}.");
@@ -33,12 +33,12 @@ namespace Asteroids
 
         public void Tick()
         {
-            levelInitializer.UpdateLevel(Time.time);
+            levelController.UpdateLevel(Time.time);
         }
 
         private void CreateLevel()
         {
-            level = levelInitializer.CreateLevel();
+            level = levelController.CreateLevel();
         }
 
         /// <inheritdoc cref="IGameController.OnPlayerFire(Vector2, Vector2)" />

@@ -37,7 +37,7 @@ namespace Asteroids.Scopes
 
             // Game logic
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped).As<IGameController>();
-            builder.Register<LevelInitializer>(Lifetime.Scoped).As<ILevelInitializer>();
+            builder.Register<LevelController>(Lifetime.Scoped).As<ILevelController>();
 
             // Input
             builder.RegisterEntryPoint<PlayerInput>(Lifetime.Scoped).As<IPlayerInput>();

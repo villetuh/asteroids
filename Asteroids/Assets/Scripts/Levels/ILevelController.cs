@@ -1,12 +1,12 @@
 namespace Asteroids.Levels
 {
     /// <summary>
-    /// Interface for components handling level creation.
+    /// Interface for components handling level related logic.
     /// </summary>
-    public interface ILevelInitializer
+    public interface ILevelController
     {
         /// <summary>
-        /// Creates level with related game objects.
+        /// Creates level with initial game objects.
         /// </summary>
         /// <returns></returns>
         public Level CreateLevel();

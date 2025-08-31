@@ -7,9 +7,9 @@ using UnityEngine;
 namespace Asteroids.Levels
 {
     /// <summary>
-    /// Component handling level creation.
+    /// Component handling logic related to the current level.
     /// </summary>
-    public class LevelInitializer : ILevelInitializer
+    public class LevelController : ILevelController
     {
         private readonly IPlayerFactory playerFactory;
         private readonly IAsteroidFactory asteroidFactory;
@@ -19,19 +19,19 @@ namespace Asteroids.Levels
         private float timeBetweenAsteroidSpawns = 5.0f;
         private float lastAsteroidSpawnTime = -5.0f;
 
-        public LevelInitializer(IPlayerFactory playerFactory, IAsteroidFactory asteroidFactory, ScreenEdgeSpawner screenEdgeSpawner)
+        public LevelController(IPlayerFactory playerFactory, IAsteroidFactory asteroidFactory, ScreenEdgeSpawner screenEdgeSpawner)
         {
             this.playerFactory = playerFactory
-                ?? throw new ArgumentNullException(nameof(playerFactory), $"{nameof(LevelInitializer)} requires reference to {nameof(IPlayerFactory)}.");
+                ?? throw new ArgumentNullException(nameof(playerFactory), $"{nameof(LevelController)} requires reference to {nameof(IPlayerFactory)}.");
 
             this.asteroidFactory = asteroidFactory
-                ?? throw new ArgumentNullException(nameof(asteroidFactory), $"{nameof(LevelInitializer)} requires reference to {nameof(IAsteroidFactory)}.");
+                ?? throw new ArgumentNullException(nameof(asteroidFactory), $"{nameof(LevelController)} requires reference to {nameof(IAsteroidFactory)}.");
 
             this.screenEdgeSpawner = screenEdgeSpawner
-                ?? throw new ArgumentNullException(nameof(screenEdgeSpawner), $"{nameof(LevelInitializer)} requires reference to {nameof(ScreenEdgeSpawner)}.");
+                ?? throw new ArgumentNullException(nameof(screenEdgeSpawner), $"{nameof(LevelController)} requires reference to {nameof(ScreenEdgeSpawner)}.");
         }
 
-        /// <inheritdoc cref="ILevelInitializer.CreateLevel" />
+        /// <inheritdoc cref="ILevelController.CreateLevel" />
         public Level CreateLevel()
         {
             var player = playerFactory.CreatePlayer();
