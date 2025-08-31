@@ -1,3 +1,4 @@
+using Asteroids.Entities;
 using Asteroids.Factories;
 using Asteroids.Levels;
 using System;
@@ -35,11 +36,20 @@ namespace Asteroids
             level = levelInitializer.CreateLevel();
         }
 
+        /// <inheritdoc cref="IGameController.OnPlayerFire(Vector2, Vector2)" />
         public void OnPlayerFire(Vector2 position, Vector2 direction)
         {
             var bullet = bulletFactory.CreateBullet(position, direction);
 
             level.AddBullet(bullet);
+        }
+
+        /// <inheritdoc cref="IGameController.OnBulletExpired(Bullet)" />
+        public void OnBulletExpired(Bullet bullet)
+        {
+            level.RemoveBullet(bullet);
+
+            bulletFactory.DestroyBullet(bullet);
         }
     }
 }

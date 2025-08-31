@@ -12,6 +12,12 @@ namespace Asteroids.Factories
         /// Creates a bullet.
         /// </summary>
         /// <returns></returns>
-        Bullet CreateBullet(Vector2 position, Vector2 direction);
+        public Bullet CreateBullet(Vector2 position, Vector2 direction);
+
+        /// <summary>
+        /// Destroys bullet created by the factory.
+        /// </summary>
+        /// <param name="bullet"></param>
+        public void DestroyBullet(Bullet bullet);
     }
 }

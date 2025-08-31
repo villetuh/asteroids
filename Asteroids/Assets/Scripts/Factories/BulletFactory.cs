@@ -35,5 +35,14 @@ namespace Asteroids.Factories
 
             return bullet;
         }
+
+        /// <inheritdoc cref="IBulletFactory.DestroyBullet" />
+        public void DestroyBullet(Bullet bullet)
+        {
+            if (bullet != null)
+            {
+                GameObject.Destroy(bullet.gameObject);
+            }
+        }
     }
 }

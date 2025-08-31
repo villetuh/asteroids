@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace Asteroids.Entities
 {
@@ -7,7 +8,12 @@ namespace Asteroids.Entities
     /// </summary>
     public class Bullet : MonoBehaviour, IGameEntity
     {
+        private IGameController gameController;
+
         private readonly float bulletSpeed = 10.0f; // units per second
+        private readonly float bulletLifetime = 3.0f; // seconds
+
+        private float createTime = 0.0f;
 
         public GameEntityType EntityType => GameEntityType.Bullet;
 
@@ -23,14 +29,29 @@ namespace Asteroids.Entities
 
         public Vector2 Speed { get; private set; }
 
+        [Inject]
+        private void Construct(IGameController gameController)
+        {
+            this.gameController = gameController
+                ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Bullet)} requires reference to {nameof(IGameController)}.");
+        }
+
         public void SetPositionAndDirection(Vector2 position, Vector2 direction)
         {
             transform.SetPositionAndRotation(position, transform.rotation);
             Speed = bulletSpeed * direction;
+
+            createTime = Time.time;
         }
 
         public void Update()
         {
+            if (IsMaxLifeTimeReached(Time.time))
+            {
+                gameController.OnBulletExpired(this);
+                return;
+            }
+
             var position = GetUpdatedPosition(Speed);
 
             transform.SetPositionAndRotation(position, transform.rotation);
@@ -44,6 +65,15 @@ namespace Asteroids.Entities
                 position += Speed * Time.deltaTime;
             }
             return position;
+        }
+
+        private bool IsMaxLifeTimeReached(float currentTime)
+        {
+            if (currentTime - createTime >= bulletLifetime)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

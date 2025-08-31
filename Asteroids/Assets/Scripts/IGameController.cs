@@ -1,3 +1,4 @@
+using Asteroids.Entities;
 using UnityEngine;
 
 namespace Asteroids
@@ -13,5 +14,11 @@ namespace Asteroids
         /// <param name="position"></param>
         /// <param name="direction"></param>
         public void OnPlayerFire(Vector2 position, Vector2 direction);
+
+        /// <summary>
+        /// Event invoked when bullet reaches its lifetime without hitting anything.
+        /// </summary>
+        /// <param name="bullet"></param>
+        public void OnBulletExpired(Bullet bullet);
     }
 }
