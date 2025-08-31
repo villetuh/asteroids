@@ -137,6 +137,15 @@ namespace Asteroids.Entities
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            var gameEntity = collision.GetComponentInParent<IGameEntity>();
+            if (gameEntity != null && gameEntity.EntityType == GameEntityType.Asteroid)
+            {
+                gameController.OnPlayerHit(gameEntity as Asteroid);
+            }
+        }
+
         public void Dispose()
         {
             if (playerInput != null)

@@ -27,5 +27,10 @@ namespace Asteroids
         /// <param name="bullet"></param>
         /// <param name="asteroid"></param>
         public void OnAsteroidHit(Bullet bullet, Asteroid asteroid);
+
+        /// <summary>
+        /// Event invoked when asteroid hits the player.
+        /// </summary>
+        public void OnPlayerHit(Asteroid asteroid);
     }
 }

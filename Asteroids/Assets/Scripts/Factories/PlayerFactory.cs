@@ -1,5 +1,6 @@
 using Asteroids.Entities;
 using System;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -30,6 +31,15 @@ namespace Asteroids.Factories
         public Player CreatePlayer()
         {
             return container.Instantiate(playerPrefab);
+        }
+
+        /// <inheritdoc cref="IPlayerFactory.DestroyPlayer(Player)" />
+        public void DestroyPlayer(Player player)
+        {
+            if (player != null)
+            {
+                GameObject.Destroy(player.gameObject);
+            }
         }
     }
 }

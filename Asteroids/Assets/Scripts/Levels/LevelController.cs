@@ -46,6 +46,7 @@ namespace Asteroids.Levels
             level = new Level(player);
         }
 
+        /// <inheritdoc cref="ILevelController.UpdateLevel(float)" />
         public void UpdateLevel(float time)
         {
             if (levelStartTime == 0.0f)
@@ -60,10 +61,53 @@ namespace Asteroids.Levels
             }
         }
 
+        /// <inheritdoc cref="ILevelController.HandleAsteroidHit(Bullet, Asteroid)" />
         public void HandleAsteroidHit(Bullet bullet, Asteroid asteroid)
         {
             HandleBulletExpired(bullet);
 
+            HandleAsteroidHit(asteroid);
+        }
+
+        /// <inheritdoc cref="ILevelController.HandleBulletFired(Vector2, Vector2)" />
+        public void HandleBulletFired(Vector2 position, Vector2 direction)
+        {
+            var bullet = bulletFactory.CreateBullet(position, direction);
+
+            level.AddBullet(bullet);
+        }
+
+        /// <inheritdoc cref="ILevelController.HandleBulletExpired(Bullet)" />
+        public void HandleBulletExpired(Bullet bullet)
+        {
+            level.RemoveBullet(bullet);
+
+            bulletFactory.DestroyBullet(bullet);
+        }
+
+        /// <inheritdoc cref="ILevelController.HandlePlayerHit(Asteroid)" />
+        public void HandlePlayerHit(Asteroid asteroid)
+        {
+            playerFactory.DestroyPlayer(level.Player);
+
+            HandleAsteroidHit(asteroid);
+        }
+
+        private Asteroid CreateAsteroid(AsteroidSize asteroidSize)
+        {
+            var (position, direction) = screenEdgeSpawner.GetScreenEdgeSpawnPointAndDirection(0.5f);
+            return CreateAsteroid(asteroidSize, position, direction);
+        }
+
+        private Asteroid CreateAsteroid(AsteroidSize asteroidSize, Vector2 position, Vector2 direction)
+        {
+            var asteroid = asteroidFactory.CreateAsteroid(asteroidSize, position, direction);
+            level.AddAsteroid(asteroid);
+            return asteroid;
+        }
+
+        private void HandleAsteroidHit(Asteroid asteroid)
+        {
             var asteroidPosition = asteroid.Position;
 
             level.RemoveAsteroid(asteroid);
@@ -85,33 +129,6 @@ namespace Asteroids.Levels
                 default:
                     throw new ArgumentOutOfRangeException(nameof(asteroid.Size), $"Unhandled asteroid size: {asteroid.Size}");
             }
-        }
-
-        public void HandleBulletFired(Vector2 position, Vector2 direction)
-        {
-            var bullet = bulletFactory.CreateBullet(position, direction);
-
-            level.AddBullet(bullet);
-        }
-
-        public void HandleBulletExpired(Bullet bullet)
-        {
-            level.RemoveBullet(bullet);
-
-            bulletFactory.DestroyBullet(bullet);
-        }
-
-        private Asteroid CreateAsteroid(AsteroidSize asteroidSize)
-        {
-            var (position, direction) = screenEdgeSpawner.GetScreenEdgeSpawnPointAndDirection(0.5f);
-            return CreateAsteroid(asteroidSize, position, direction);
-        }
-
-        private Asteroid CreateAsteroid(AsteroidSize asteroidSize, Vector2 position, Vector2 direction)
-        {
-            var asteroid = asteroidFactory.CreateAsteroid(asteroidSize, position, direction);
-            level.AddAsteroid(asteroid);
-            return asteroid;
         }
     }
 }

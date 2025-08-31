@@ -39,5 +39,11 @@ namespace Asteroids.Levels
         /// </summary>
         /// <param name="bullet"></param>
         public void HandleBulletExpired(Bullet bullet);
+
+        /// <summary>
+        /// Update level when player has been hit by an asteroid.
+        /// </summary>
+        /// <param name="asteroid"></param>
+        public void HandlePlayerHit(Asteroid asteroid);
     }
 }

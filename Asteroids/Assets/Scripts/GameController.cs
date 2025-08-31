@@ -51,9 +51,16 @@ namespace Asteroids
             levelController.HandleBulletExpired(bullet);
         }
 
+        /// <inheritdoc cref="IGameController.OnAsteroidHit(Bullet, Asteroid)" />
         public void OnAsteroidHit(Bullet bullet, Asteroid asteroid)
         {
             levelController.HandleAsteroidHit(bullet, asteroid);
+        }
+
+        /// <inheritdoc cref="IGameController.OnPlayerHit(Asteroid)" />
+        public void OnPlayerHit(Asteroid asteroid)
+        {
+            levelController.HandlePlayerHit(asteroid);
         }
     }
 }
