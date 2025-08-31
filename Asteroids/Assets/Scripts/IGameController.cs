@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Asteroids
 {
     /// <summary>
@@ -5,6 +7,11 @@ namespace Asteroids
     /// </summary>
     public interface IGameController
     {
-
+        /// <summary>
+        /// Event invoked when player performs a fire action.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
+        public void OnPlayerFire(Vector2 position, Vector2 direction);
     }
 }

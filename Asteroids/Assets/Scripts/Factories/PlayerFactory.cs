@@ -18,8 +18,12 @@ namespace Asteroids.Factories
             this.container = container
                 ?? throw new ArgumentNullException(nameof(container), $"{nameof(PlayerFactory)} requires reference to {nameof(IObjectResolver)}.");
 
-            this.playerPrefab = playerPrefab
-                ?? throw new ArgumentNullException(nameof(playerPrefab), $"{nameof(PlayerFactory)} requires reference to {nameof(Player)} prefab.");
+            this.playerPrefab = playerPrefab;
+            if (playerPrefab == null)
+            {
+                throw new ArgumentNullException(nameof(playerPrefab), $"{nameof(PlayerFactory)} requires reference to {nameof(Player)} prefab.");
+            }
+                
         }
 
         /// <inheritdoc cref="IPlayerFactory.CreatePlayer" />

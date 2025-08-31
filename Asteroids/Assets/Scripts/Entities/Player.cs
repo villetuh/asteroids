@@ -10,6 +10,7 @@ namespace Asteroids.Entities
     /// </summary>
     public class Player : MonoBehaviour, IGameEntity, IDisposable
     {
+        private IGameController gameController;
         private IPlayerInput playerInput;
 
         private PlayerRotateDirection rotationDirection = PlayerRotateDirection.None;
@@ -19,11 +20,13 @@ namespace Asteroids.Entities
         private readonly float thrustPower = 2.5f; // units per second
         private readonly float drag = 0.33f; // velocity retention per second
 
+        private readonly float bulletOffset = 0.5f; // distance from player center to bullet spawn position
+
         public GameEntityType EntityType => GameEntityType.Player;
 
         public float Rotation
         {
-            get { return transform.rotation.z; }
+            get { return transform.rotation.eulerAngles.z; }
         }
 
         public Vector2 Position
@@ -34,8 +37,11 @@ namespace Asteroids.Entities
         public Vector2 Speed { get; private set; }
 
         [Inject]
-        private void Construct(IPlayerInput playerInput)
+        private void Construct(IGameController gameController, IPlayerInput playerInput)
         {
+            this.gameController = gameController
+                ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Player)} requires reference to {nameof(IGameController)}.");
+
             this.playerInput = playerInput
                 ?? throw new System.ArgumentNullException(nameof(playerInput), $"{nameof(Player)} requires reference to {nameof(IPlayerInput)}.");
 
@@ -56,8 +62,8 @@ namespace Asteroids.Entities
         
         public void Fire()
         {
-            // Implement firing logic here
-            Debug.Log($"{nameof(Player)}: Firing");
+            var direction = GetDirection(Rotation);
+            gameController.OnPlayerFire(Position + bulletOffset * direction, direction);
         }
 
         public void Update()
@@ -89,8 +95,7 @@ namespace Asteroids.Entities
             var speed = Speed;
             if (thrusting)
             {
-                float radians = rotation * Mathf.Deg2Rad;
-                var thrustVector = thrustPower * new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+                var thrustVector = thrustPower * GetDirection(rotation);
                 speed += thrustVector * Time.deltaTime;
 
                 if (speed.magnitude > thrustPower)
@@ -119,6 +124,12 @@ namespace Asteroids.Entities
                 position += Speed * Time.deltaTime;
             }
             return position;
+        }
+
+        private Vector2 GetDirection(float rotation)
+        {
+            float radians = rotation * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         }
 
         public void Dispose()
