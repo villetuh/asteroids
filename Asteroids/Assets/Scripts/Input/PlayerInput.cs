@@ -14,14 +14,14 @@ namespace Asteroids.Input
         private readonly InputAction moveInputAction;
         private readonly InputAction fireInputAction;
 
-        private PlayerRotateDirection previousRotationDirection = PlayerRotateDirection.None;
+        private RotationDirection previousRotationDirection = RotationDirection.None;
         private bool previousThrusting = false;
         private float previousFireTime = 0.0f;
 
         private float fireCooldown = 0.5f; // In seconds
 
         /// <inheritdoc cref="IPlayerInput.OnRotate" />
-        public Action<PlayerRotateDirection> OnRotate { get; set; }
+        public Action<RotationDirection> OnRotate { get; set; }
 
         /// <inheritdoc cref="IPlayerInput.OnThrust" />
         public Action<bool> OnThrust { get; set; }
@@ -51,14 +51,14 @@ namespace Asteroids.Input
         {
             Vector2 moveValue = moveInputAction.ReadValue<Vector2>();
 
-            var rotationDirection = PlayerRotateDirection.None;
+            var rotationDirection = RotationDirection.None;
             if (moveValue.x < 0.0f)
             {
-                rotationDirection = PlayerRotateDirection.Left;
+                rotationDirection = RotationDirection.Left;
             }
             else if (moveValue.x > 0.0f)
             {
-                rotationDirection = PlayerRotateDirection.Right;
+                rotationDirection = RotationDirection.Right;
             }
 
             if (rotationDirection != previousRotationDirection)

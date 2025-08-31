@@ -13,7 +13,7 @@ namespace Asteroids.Entities
         private IGameController gameController;
         private IPlayerInput playerInput;
 
-        private PlayerRotateDirection rotationDirection = PlayerRotateDirection.None;
+        private RotationDirection rotationDirection = RotationDirection.None;
         private readonly float rotationSpeed = 180.0f; // degrees per second
 
         private bool thrusting = false;
@@ -50,7 +50,7 @@ namespace Asteroids.Entities
             playerInput.OnFire += Fire;
         }
 
-        public void Rotate(PlayerRotateDirection direction)
+        public void Rotate(RotationDirection direction)
         {
             rotationDirection = direction;
         }
@@ -76,13 +76,13 @@ namespace Asteroids.Entities
             transform.SetPositionAndRotation(position, Quaternion.Euler(Vector3.forward * rotation));
         }
 
-        private float GetUpdatedRotation(PlayerRotateDirection rotationDirection)
+        private float GetUpdatedRotation(RotationDirection rotationDirection)
         {
             var rotation = transform.rotation.eulerAngles.z;
 
-            if (rotationDirection != PlayerRotateDirection.None)
+            if (rotationDirection != RotationDirection.None)
             {
-                var rotationDirectionValue = rotationDirection == PlayerRotateDirection.Left ? 1.0f : -1.0f;
+                var rotationDirectionValue = rotationDirection == RotationDirection.Left ? 1.0f : -1.0f;
                 rotation += (float)rotationDirectionValue * rotationSpeed * Time.deltaTime;
                 rotation = rotation % 360.0f;
             }

@@ -1,9 +1,9 @@
 namespace Asteroids.Entities
 {
     /// <summary>
-    /// Rotation direction for the player rotate action.
+    /// Rotation direction for the rotate actions
     /// </summary>
-    public enum PlayerRotateDirection
+    public enum RotationDirection
     {
         Left = -1,
         None = 0,

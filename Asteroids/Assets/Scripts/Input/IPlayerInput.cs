@@ -11,7 +11,7 @@ namespace Asteroids.Input
         /// <summary>
         /// Event invoked when rotation related input changes.
         /// </summary>
-        public Action<PlayerRotateDirection> OnRotate { get; set; }
+        public Action<RotationDirection> OnRotate { get; set; }
 
         /// <summary>
         /// Event invoked when thrust related input changes.
