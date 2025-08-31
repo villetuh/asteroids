@@ -11,6 +11,8 @@ namespace Asteroids.Factories
         /// <summary>
         /// Creates a bullet.
         /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
         /// <returns></returns>
         public Bullet CreateBullet(Vector2 position, Vector2 direction);
 

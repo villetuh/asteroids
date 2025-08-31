@@ -4,6 +4,17 @@ using VContainer;
 namespace Asteroids.Entities
 {
     /// <summary>
+    /// Sizes of asteroids.
+    /// </summary>
+    public enum AsteroidSize
+    {
+        Undefined = -1,
+        Large = 0,
+        Medium = 1,
+        Small = 2,
+    }
+
+    /// <summary>
     /// Component handling asteroid related logic.
     /// </summary>
     public class Asteroid : MonoBehaviour, IGameEntity
@@ -26,6 +37,8 @@ namespace Asteroids.Entities
 
         public Vector2 Speed { get; private set; }
 
+        public AsteroidSize Size { get; set; } = AsteroidSize.Undefined;
+
         [Inject]
         private void Construct(IGameController gameController)
         {
@@ -33,8 +46,9 @@ namespace Asteroids.Entities
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(Asteroid)} requires reference to {nameof(IGameController)}.");
         }
 
-        public void SetPositionAndDirection(Vector2 position, Vector2 direction)
+        public void SetSizePositionAndDirection(AsteroidSize size, Vector2 position, Vector2 direction)
         {
+            Size = size;
             transform.SetPositionAndRotation(position, transform.rotation);
             Speed = asteroidSpeed * direction;
         }

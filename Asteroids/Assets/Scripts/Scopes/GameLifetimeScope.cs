@@ -29,6 +29,7 @@ namespace Asteroids.Scopes
             // Factories
             builder.Register<PlayerFactory>(Lifetime.Scoped).As<IPlayerFactory>();
             builder.Register<BulletFactory>(Lifetime.Scoped).As<IBulletFactory>();
+            builder.Register<AsteroidFactory>(Lifetime.Scoped).As<IAsteroidFactory>();
 
             // Game logic
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped).As<IGameController>();
