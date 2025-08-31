@@ -3,6 +3,7 @@ using Asteroids.Entities;
 using Asteroids.Factories;
 using Asteroids.Input;
 using Asteroids.Levels;
+using Asteroids.Scores;
 using Asteroids.UI;
 using Asteroids.Utilities;
 using UnityEngine;
@@ -47,6 +48,7 @@ namespace Asteroids.Scopes
             // Game logic
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped).As<IGameController>();
             builder.Register<LevelController>(Lifetime.Scoped).As<ILevelController>();
+            builder.Register<ScoreController>(Lifetime.Scoped).As<IScoreController>();
 
             // Input
             builder.RegisterEntryPoint<PlayerInput>(Lifetime.Scoped).As<IPlayerInput>();

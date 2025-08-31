@@ -55,6 +55,22 @@ namespace Asteroids.Configurations
         public float Speed { get; set; } = 1.0f;
     }
 
+    [Serializable]
+    public class ScoreSettings
+    {
+        [field: SerializeField]
+        [Tooltip("Score granted for hitting a large asteroid.")]
+        public int LargeAsteroidScore { get; set; } = 10;
+
+        [field: SerializeField]
+        [Tooltip("Score granted for hitting a medium asteroid.")]
+        public int MediumAsteroidScore { get; set; } = 30;
+
+        [field: SerializeField]
+        [Tooltip("Score granted for hitting a small asteroid.")]
+        public int SmallAsteroidScore { get; set; } = 50;
+    }
+
     /// <summary>
     /// Configuration related to the game play
     /// </summary>
@@ -80,5 +96,10 @@ namespace Asteroids.Configurations
         private AsteroidSettings asteroidSettings = new();
         /// <inheritdoc cref="IGameSettings.AsteroidSettings" />
         public AsteroidSettings AsteroidSettings => asteroidSettings;
+
+        [SerializeField]
+        private ScoreSettings scoreSettings = new();
+        /// <inheritdoc cref="IGameSettings.ScoreSettings" />
+        public ScoreSettings ScoreSettings => scoreSettings;
     }
 }

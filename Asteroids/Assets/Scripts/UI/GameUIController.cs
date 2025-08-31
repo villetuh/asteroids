@@ -1,3 +1,4 @@
+using Asteroids.Scores;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -15,20 +16,27 @@ namespace Asteroids.UI
 
         [Header("GameScreen")]
         [SerializeField] private Transform gameScreen;
+        [SerializeField] private TMPro.TextMeshProUGUI scoreText;
 
         [Header("GameOverScreen")]
         [SerializeField] private Transform gameOverScreen;
         [SerializeField] private Button backToMainMenuButton;
 
         private IGameController gameController;
+        private IScoreController scoreController;
 
         [Inject]
-        private void Construct(IGameController gameController)
+        private void Construct(IGameController gameController, IScoreController scoreController)
         {
             this.gameController = gameController
                 ?? throw new System.ArgumentNullException(nameof(gameController), $"{nameof(GameUIController)} requires reference to {nameof(IGameController)}.");
 
             gameController.OnGameStateChanged += OnGameStateChanged;
+
+            this.scoreController = scoreController
+                ?? throw new System.ArgumentNullException(nameof(scoreController), $"{nameof(GameUIController)} requires reference to {nameof(IScoreController)}.");
+
+            scoreController.OnScoreChanged += OnScoreChanged;
 
             startGameButton.onClick.AddListener(OnStartGameClicked);
             backToMainMenuButton.onClick.AddListener(OnBackToMainMenuClicked);
@@ -39,6 +47,11 @@ namespace Asteroids.UI
             if (gameController != null)
             {
                 gameController.OnGameStateChanged -= OnGameStateChanged;
+            }
+
+            if (scoreController != null)
+            {
+                scoreController.OnScoreChanged -= OnScoreChanged;
             }
 
             if (startGameButton != null)
@@ -81,6 +94,11 @@ namespace Asteroids.UI
             }
         }
 
+        private void OnScoreChanged(int newScore)
+        {
+            scoreText.SetText($"{newScore}");
+        }
+
         private void ShowMainMenu()
         {
             mainMenu.gameObject.SetActive(true);
@@ -98,7 +116,7 @@ namespace Asteroids.UI
         private void ShowGameOverScreen()
         {
             mainMenu.gameObject.SetActive(false);
-            gameScreen.gameObject.SetActive(false);
+            gameScreen.gameObject.SetActive(true);
             gameOverScreen.gameObject.SetActive(true);
         }
     }

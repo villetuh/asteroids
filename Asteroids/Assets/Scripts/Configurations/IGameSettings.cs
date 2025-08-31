@@ -24,5 +24,10 @@
         /// Settings related to asteroids.
         /// </summary>
         public AsteroidSettings AsteroidSettings { get; }
+
+        /// <summary>
+        /// Settings related to scores.
+        /// </summary>
+        public ScoreSettings ScoreSettings { get; }
     }
 }

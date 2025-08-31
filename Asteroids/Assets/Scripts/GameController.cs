@@ -1,5 +1,6 @@
 using Asteroids.Entities;
 using Asteroids.Levels;
+using Asteroids.Scores;
 using Asteroids.Utilities;
 using System;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace Asteroids
     public class GameController : IGameController, IStartable, ITickable
     {
         private readonly ILevelController levelController;
+        private readonly IScoreController scoreController;
         private readonly ITimeProvider timeProvider;
 
         private GameState currentState = GameState.Undefined;
@@ -31,10 +33,14 @@ namespace Asteroids
         /// <inheritdoc cref="IGameController.OnGameStateChanged" />
         public Action<GameState> OnGameStateChanged { get; set; }
 
-        public GameController(ILevelController levelController, ITimeProvider timeProvider)
+        public GameController(ILevelController levelController, IScoreController scoreController,
+                              ITimeProvider timeProvider)
         {
             this.levelController = levelController
                 ?? throw new ArgumentNullException(nameof(levelController), $"{nameof(GameController)} requires reference to {nameof(ILevelController)}.");
+
+            this.scoreController = scoreController
+                ?? throw new ArgumentNullException(nameof(scoreController), $"{nameof(GameController)} requires reference to {nameof(IScoreController)}.");
 
             this.timeProvider = timeProvider
                 ?? throw new ArgumentNullException(nameof(timeProvider), $"{nameof(GameController)} requires reference to {nameof(ITimeProvider)}.");
@@ -60,6 +66,7 @@ namespace Asteroids
         /// <inheritdoc cref="IGameController.StartGame" />
         public void StartGame()
         {
+            scoreController.ResetScore();
             levelController.CreateLevel();
 
             ChangeGameState(GameState.Playing);
@@ -88,6 +95,7 @@ namespace Asteroids
         /// <inheritdoc cref="IGameController.OnAsteroidHit(Bullet, Asteroid)" />
         public void OnAsteroidHit(Bullet bullet, Asteroid asteroid)
         {
+            scoreController.ScoreDestroyedAsteroid(asteroid.Size);
             levelController.HandleAsteroidHit(bullet, asteroid);
         }
 
