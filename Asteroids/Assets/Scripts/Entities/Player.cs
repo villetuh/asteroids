@@ -10,7 +10,7 @@ namespace Asteroids.Entities
     /// <summary>
     /// Component handling player related logic.
     /// </summary>
-    public class Player : MonoBehaviour, IGameEntity, IDisposable
+    public class Player : MonoBehaviour, IGameEntity
     {
         private IGameController gameController;
         private ITimeProvider timeProvider;
@@ -90,6 +90,16 @@ namespace Asteroids.Entities
             transform.SetPositionAndRotation(position, Quaternion.Euler(Vector3.forward * rotation));
         }
 
+        public void OnDestroy()
+        {
+            if (playerInput != null)
+            {
+                playerInput.OnRotate -= Rotate;
+                playerInput.OnThrust -= Thrust;
+                playerInput.OnFire -= Fire;
+            }
+        }
+
         private float GetUpdatedRotation(RotationDirection rotationDirection)
         {
             var rotation = transform.rotation.eulerAngles.z;
@@ -161,14 +171,6 @@ namespace Asteroids.Entities
             }
         }
 
-        public void Dispose()
-        {
-            if (playerInput != null)
-            {
-                playerInput.OnRotate -= Rotate;
-                playerInput.OnThrust -= Thrust;
-                playerInput.OnFire -= Fire;
-            }
-        }
+        
     }
 }
