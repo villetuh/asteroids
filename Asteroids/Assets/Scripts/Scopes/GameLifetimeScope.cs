@@ -1,5 +1,6 @@
 using Asteroids.Entities;
 using Asteroids.Factories;
+using Asteroids.Input;
 using Asteroids.Levels;
 using UnityEngine;
 using VContainer;
@@ -18,11 +19,14 @@ namespace Asteroids.Scopes
             builder.RegisterInstance(playerPrefab).Keyed("PlayerPrefab");
 
             // Factories
-            builder.Register<PlayerFactory>(Lifetime.Singleton).As<IPlayerFactory>();
+            builder.Register<PlayerFactory>(Lifetime.Scoped).As<IPlayerFactory>();
 
             // Game logic
-            builder.RegisterEntryPoint<GameController>(Lifetime.Singleton).As<IGameController>();
-            builder.Register<LevelInitializer>(Lifetime.Singleton).As<ILevelInitializer>();
+            builder.RegisterEntryPoint<GameController>(Lifetime.Scoped).As<IGameController>();
+            builder.Register<LevelInitializer>(Lifetime.Scoped).As<ILevelInitializer>();
+
+            // Input
+            builder.RegisterEntryPoint<PlayerInput>(Lifetime.Scoped).As<IPlayerInput>();
         }
     }
 }

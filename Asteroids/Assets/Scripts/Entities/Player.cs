@@ -1,12 +1,17 @@
+using Asteroids.Input;
+using System;
 using UnityEngine;
+using VContainer;
 
 namespace Asteroids.Entities
 {
     /// <summary>
     /// Component handling player related logic.
     /// </summary>
-    public class Player : MonoBehaviour, IPlayerActions, IGameEntity
+    public class Player : MonoBehaviour, IGameEntity, IDisposable
     {
+        private IPlayerInput playerInput;
+
         private PlayerRotateDirection rotationDirection = PlayerRotateDirection.None;
         private readonly float rotationSpeed = 180.0f; // degrees per second
 
@@ -27,6 +32,17 @@ namespace Asteroids.Entities
         }
 
         public Vector2 Speed { get; private set; }
+
+        [Inject]
+        private void Construct(IPlayerInput playerInput)
+        {
+            this.playerInput = playerInput
+                ?? throw new System.ArgumentNullException(nameof(playerInput), $"{nameof(Player)} requires reference to {nameof(IPlayerInput)}.");
+
+            playerInput.OnRotate += Rotate;
+            playerInput.OnThrust += Thrust;
+            playerInput.OnFire += Fire;
+        }
 
         public void Rotate(PlayerRotateDirection direction)
         {
@@ -103,6 +119,16 @@ namespace Asteroids.Entities
                 position += Speed * Time.deltaTime;
             }
             return position;
+        }
+
+        public void Dispose()
+        {
+            if (playerInput != null)
+            {
+                playerInput.OnRotate -= Rotate;
+                playerInput.OnThrust -= Thrust;
+                playerInput.OnFire -= Fire;
+            }
         }
     }
 }
