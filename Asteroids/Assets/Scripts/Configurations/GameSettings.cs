@@ -8,7 +8,15 @@ namespace Asteroids.Configurations
     {
         [field: SerializeField]
         [Tooltip("Time to wait before spawning a next asteroid.")]
-        public float TimeBetweenAsteroidSpawns { get; set; } = 5.0f;
+        public float InitialAsteroidSpawnInterval { get; set; } = 5.0f;
+
+        [field: SerializeField]
+        [Tooltip("Time limit on how short the wait before spawning a next asteroid can be.")]
+        public float MinAsteroidSpawnInterval { get; set; } = 1.0f;
+
+        [field: SerializeField]
+        [Tooltip("Time reduction per asteroid spawned.")]
+        public float AsteroidSpawnIntervalReductionStep { get; set; } = 0.05f;
     }
 
     [Serializable]

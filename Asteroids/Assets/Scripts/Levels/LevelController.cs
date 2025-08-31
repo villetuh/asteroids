@@ -20,6 +20,7 @@ namespace Asteroids.Levels
 
         private float levelStartTime = 0.0f;
         private float lastAsteroidSpawnTime = -5.0f;
+        private float currentAsteroidSpawnInterval = 5.0f;
 
         private Level level;
 
@@ -54,6 +55,8 @@ namespace Asteroids.Levels
             {
                 Player = player
             };
+
+            currentAsteroidSpawnInterval = gameSettings.LevelSettings.InitialAsteroidSpawnInterval;
         }
 
         /// <inheritdoc cref="ILevelController.ClearLevel" />
@@ -92,11 +95,18 @@ namespace Asteroids.Levels
                 levelStartTime = time;
             }
 
-            if ((time - lastAsteroidSpawnTime) > gameSettings.LevelSettings.TimeBetweenAsteroidSpawns)
+            if ((time - lastAsteroidSpawnTime) > currentAsteroidSpawnInterval)
             {
                 CreateAsteroid(AsteroidSize.Large);
                 lastAsteroidSpawnTime = time;
+                UpdateAsteroidSpawnInterval();
             }
+        }
+
+        private void UpdateAsteroidSpawnInterval()
+        {
+            currentAsteroidSpawnInterval = Mathf.Max(gameSettings.LevelSettings.MinAsteroidSpawnInterval,
+                currentAsteroidSpawnInterval - gameSettings.LevelSettings.AsteroidSpawnIntervalReductionStep);
         }
 
         /// <inheritdoc cref="ILevelController.HandleAsteroidHit(Bullet, Asteroid)" />
