@@ -35,18 +35,18 @@ namespace Asteroids
         /// Event invoked when bullet reaches its lifetime without hitting anything.
         /// </summary>
         /// <param name="bullet"></param>
-        public void OnBulletExpired(Bullet bullet);
+        public void OnBulletExpired(IBullet bullet);
 
         /// <summary>
         /// Event invoked when bullet hits an asteroid.
         /// </summary>
         /// <param name="bullet"></param>
         /// <param name="asteroid"></param>
-        public void OnAsteroidHit(Bullet bullet, Asteroid asteroid);
+        public void OnAsteroidHit(IBullet bullet, IAsteroid asteroid);
 
         /// <summary>
         /// Event invoked when asteroid hits the player.
         /// </summary>
-        public void OnPlayerHit(Asteroid asteroid);
+        public void OnPlayerHit(IAsteroid asteroid);
     }
 }

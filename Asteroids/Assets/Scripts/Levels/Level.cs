@@ -9,13 +9,13 @@ namespace Asteroids.Levels
     /// </summary>
     public class Level
     {
-        public Player Player { get; set; }
+        public IPlayer Player { get; set; }
 
-        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+        public List<IBullet> Bullets { get; set; } = new List<IBullet>();
 
-        public List<Asteroid> Asteroids { get; set; } = new List<Asteroid>();
+        public List<IAsteroid> Asteroids { get; set; } = new List<IAsteroid>();
 
-        public void AddBullet(Bullet bullet)
+        public void AddBullet(IBullet bullet)
         {
             if (bullet == null)
             {
@@ -24,7 +24,7 @@ namespace Asteroids.Levels
             Bullets.Add(bullet);
         }
 
-        public void RemoveBullet(Bullet bullet)
+        public void RemoveBullet(IBullet bullet)
         {
             if (bullet == null)
             {
@@ -33,7 +33,7 @@ namespace Asteroids.Levels
             Bullets.Remove(bullet);
         }
 
-        public void AddAsteroid(Asteroid asteroid)
+        public void AddAsteroid(IAsteroid asteroid)
         {
             if (asteroid == null)
             {
@@ -42,7 +42,7 @@ namespace Asteroids.Levels
             Asteroids.Add(asteroid);
         }
 
-        public void RemoveAsteroid(Asteroid asteroid)
+        public void RemoveAsteroid(IAsteroid asteroid)
         {
             if (asteroid == null)
             {

@@ -15,12 +15,12 @@ namespace Asteroids.Factories
         /// <param name="position"></param>
         /// <param name="speed"></param>
         /// <returns></returns>
-        public Asteroid CreateAsteroid(AsteroidSize size, Vector2 position, Vector2 speed);
+        public IAsteroid CreateAsteroid(AsteroidSize size, Vector2 position, Vector2 speed);
 
         /// <summary>
         /// Destroys an asteroid created by the factory.
         /// </summary>
         /// <param name="asteroid"></param>
-        public void DestroyAsteroid(Asteroid asteroid);
+        public void DestroyAsteroid(IAsteroid asteroid);
     }
 }

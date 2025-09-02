@@ -14,12 +14,12 @@ namespace Asteroids.Factories
         /// <param name="position"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public Bullet CreateBullet(Vector2 position, Vector2 direction);
+        public IBullet CreateBullet(Vector2 position, Vector2 direction);
 
         /// <summary>
         /// Destroys bullet created by the factory.
         /// </summary>
         /// <param name="bullet"></param>
-        public void DestroyBullet(Bullet bullet);
+        public void DestroyBullet(IBullet bullet);
     }
 }

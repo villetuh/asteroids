@@ -44,35 +44,26 @@ namespace Asteroids.Factories
         }
 
         /// <inheritdoc cref="IAsteroidFactory.CreateAsteroid" />
-        public Asteroid CreateAsteroid(AsteroidSize size, Vector2 position, Vector2 speed)
+        public IAsteroid CreateAsteroid(AsteroidSize size, Vector2 position, Vector2 speed)
         {
-            Asteroid asteroid;
-            switch (size)
+            IAsteroid asteroid = size switch
             {
-                case AsteroidSize.Large:
-                    asteroid = container.Instantiate(asteroidLargePrefab);
-                    break;
-                case AsteroidSize.Medium:
-                    asteroid = container.Instantiate(asteroidMediumPrefab);
-                    break;
-                case AsteroidSize.Small:
-                    asteroid = container.Instantiate(asteroidSmallPrefab);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(size), size, $"{nameof(AsteroidFactory)} cannot create asteroid of size {size}.");
-            }
-
+                AsteroidSize.Large => container.Instantiate(asteroidLargePrefab),
+                AsteroidSize.Medium => container.Instantiate(asteroidMediumPrefab),
+                AsteroidSize.Small => container.Instantiate(asteroidSmallPrefab),
+                _ => throw new ArgumentOutOfRangeException(nameof(size), size, $"{nameof(AsteroidFactory)} cannot create asteroid of size {size}."),
+            };
             asteroid.SetSizePositionAndDirection(size, position, speed);
 
             return asteroid;
         }
 
         /// <inheritdoc cref="IAsteroidFactory.DestroyAsteroid" />
-        public void DestroyAsteroid(Asteroid asteroid)
+        public void DestroyAsteroid(IAsteroid asteroid)
         {
-            if (asteroid != null)
+            if (asteroid != null && asteroid is Component asteroidComponent)
             {
-                GameObject.Destroy(asteroid.gameObject);
+                GameObject.Destroy(asteroidComponent.gameObject);
             }
         }
     }

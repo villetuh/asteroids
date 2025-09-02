@@ -8,7 +8,7 @@ namespace Asteroids.Entities
     /// <summary>
     /// Component handling bullet related logic.
     /// </summary>
-    public class Bullet : MonoBehaviour, IGameEntity
+    public class Bullet : MonoBehaviour, IBullet
     {
         private IGameController gameController;
         private ITimeProvider timeProvider;
@@ -99,7 +99,7 @@ namespace Asteroids.Entities
             var gameEntity = collision.GetComponentInParent<IGameEntity>();
             if (gameEntity != null && gameEntity.EntityType == GameEntityType.Asteroid)
             {
-                gameController.OnAsteroidHit(this, gameEntity as Asteroid);
+                gameController.OnAsteroidHit(this, gameEntity as IAsteroid);
             }
         }
     }

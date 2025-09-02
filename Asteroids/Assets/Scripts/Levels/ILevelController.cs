@@ -30,7 +30,7 @@ namespace Asteroids.Levels
         /// </summary>
         /// <param name="bullet"></param>
         /// <param name="asteroid"></param>
-        public void HandleAsteroidHit(Bullet bullet, Asteroid asteroid);
+        public void HandleAsteroidHit(IBullet bullet, IAsteroid asteroid);
 
         /// <summary>
         /// Update level based on bullet being fired.
@@ -43,12 +43,12 @@ namespace Asteroids.Levels
         /// Update level when bullet has expired.
         /// </summary>
         /// <param name="bullet"></param>
-        public void HandleBulletExpired(Bullet bullet);
+        public void HandleBulletExpired(IBullet bullet);
 
         /// <summary>
         /// Update level when player has been hit by an asteroid.
         /// </summary>
         /// <param name="asteroid"></param>
-        public void HandlePlayerHit(Asteroid asteroid);
+        public void HandlePlayerHit(IAsteroid asteroid);
     }
 }

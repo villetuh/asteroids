@@ -109,8 +109,8 @@ namespace Asteroids.Levels
                 currentAsteroidSpawnInterval - gameSettings.LevelSettings.AsteroidSpawnIntervalReductionStep);
         }
 
-        /// <inheritdoc cref="ILevelController.HandleAsteroidHit(Bullet, Asteroid)" />
-        public void HandleAsteroidHit(Bullet bullet, Asteroid asteroid)
+        /// <inheritdoc cref="ILevelController.HandleAsteroidHit(IBullet, IAsteroid)" />
+        public void HandleAsteroidHit(IBullet bullet, IAsteroid asteroid)
         {
             HandleBulletExpired(bullet);
 
@@ -125,16 +125,16 @@ namespace Asteroids.Levels
             level.AddBullet(bullet);
         }
 
-        /// <inheritdoc cref="ILevelController.HandleBulletExpired(Bullet)" />
-        public void HandleBulletExpired(Bullet bullet)
+        /// <inheritdoc cref="ILevelController.HandleBulletExpired(IBullet)" />
+        public void HandleBulletExpired(IBullet bullet)
         {
             level.RemoveBullet(bullet);
 
             bulletFactory.DestroyBullet(bullet);
         }
 
-        /// <inheritdoc cref="ILevelController.HandlePlayerHit(Asteroid)" />
-        public void HandlePlayerHit(Asteroid asteroid)
+        /// <inheritdoc cref="ILevelController.HandlePlayerHit(IAsteroid)" />
+        public void HandlePlayerHit(IAsteroid asteroid)
         {
             playerFactory.DestroyPlayer(level.Player);
             level.Player = null;
@@ -142,20 +142,20 @@ namespace Asteroids.Levels
             HandleAsteroidHit(asteroid);
         }
 
-        private Asteroid CreateAsteroid(AsteroidSize asteroidSize)
+        private IAsteroid CreateAsteroid(AsteroidSize asteroidSize)
         {
             var (position, direction) = screenEdgeSpawner.GetScreenEdgeSpawnPointAndDirection(0.0f);
             return CreateAsteroid(asteroidSize, position, direction);
         }
 
-        private Asteroid CreateAsteroid(AsteroidSize asteroidSize, Vector2 position, Vector2 direction)
+        private IAsteroid CreateAsteroid(AsteroidSize asteroidSize, Vector2 position, Vector2 direction)
         {
             var asteroid = asteroidFactory.CreateAsteroid(asteroidSize, position, direction);
             level.AddAsteroid(asteroid);
             return asteroid;
         }
 
-        private void HandleAsteroidHit(Asteroid asteroid)
+        private void HandleAsteroidHit(IAsteroid asteroid)
         {
             var asteroidPosition = asteroid.Position;
 

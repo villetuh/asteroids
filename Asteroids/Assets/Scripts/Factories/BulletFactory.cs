@@ -27,7 +27,7 @@ namespace Asteroids.Factories
         }
 
         /// <inheritdoc cref="IBulletFactory.CreateBullet" />
-        public Bullet CreateBullet(Vector2 position, Vector2 speed)
+        public IBullet CreateBullet(Vector2 position, Vector2 speed)
         {
             var bullet = container.Instantiate(bulletPrefab);
 
@@ -37,11 +37,11 @@ namespace Asteroids.Factories
         }
 
         /// <inheritdoc cref="IBulletFactory.DestroyBullet" />
-        public void DestroyBullet(Bullet bullet)
+        public void DestroyBullet(IBullet bullet)
         {
-            if (bullet != null)
+            if (bullet != null && bullet is Component bulletComponent)
             {
-                GameObject.Destroy(bullet.gameObject);
+                GameObject.Destroy(bulletComponent.gameObject);
             }
         }
     }

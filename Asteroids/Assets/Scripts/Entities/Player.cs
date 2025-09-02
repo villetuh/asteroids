@@ -10,7 +10,7 @@ namespace Asteroids.Entities
     /// <summary>
     /// Component handling player related logic.
     /// </summary>
-    public class Player : MonoBehaviour, IGameEntity
+    public class Player : MonoBehaviour, IPlayer
     {
         private IGameController gameController;
         private ITimeProvider timeProvider;
@@ -167,7 +167,7 @@ namespace Asteroids.Entities
             var gameEntity = collision.GetComponentInParent<IGameEntity>();
             if (gameEntity != null && gameEntity.EntityType == GameEntityType.Asteroid)
             {
-                gameController.OnPlayerHit(gameEntity as Asteroid);
+                gameController.OnPlayerHit(gameEntity as IAsteroid);
             }
         }
 

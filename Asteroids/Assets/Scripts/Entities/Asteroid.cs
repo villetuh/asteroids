@@ -19,7 +19,7 @@ namespace Asteroids.Entities
     /// <summary>
     /// Component handling asteroid related logic.
     /// </summary>
-    public class Asteroid : MonoBehaviour, IGameEntity
+    public class Asteroid : MonoBehaviour, IAsteroid
     {
         private ITimeProvider timeProvider;
         private IScreenEdgeHelper screenEdgeHelper;

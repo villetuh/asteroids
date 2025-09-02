@@ -28,17 +28,17 @@ namespace Asteroids.Factories
         }
 
         /// <inheritdoc cref="IPlayerFactory.CreatePlayer" />
-        public Player CreatePlayer()
+        public IPlayer CreatePlayer()
         {
             return container.Instantiate(playerPrefab);
         }
 
-        /// <inheritdoc cref="IPlayerFactory.DestroyPlayer(Player)" />
-        public void DestroyPlayer(Player player)
+        /// <inheritdoc cref="IPlayerFactory.DestroyPlayer(IPlayer)" />
+        public void DestroyPlayer(IPlayer player)
         {
-            if (player != null)
+            if (player != null && player is Component playerComponent)
             {
-                GameObject.Destroy(player.gameObject);
+                GameObject.Destroy(playerComponent.gameObject);
             }
         }
     }

@@ -11,12 +11,12 @@ namespace Asteroids.Factories
         /// Creates a player.
         /// </summary>
         /// <returns></returns>
-        public Player CreatePlayer();
+        public IPlayer CreatePlayer();
 
         /// <summary>
         /// Destroys player created by the factory.
         /// </summary>
         /// <param name="player"></param>
-        public void DestroyPlayer(Player player);
+        public void DestroyPlayer(IPlayer player);
     }
 }
