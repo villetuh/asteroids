@@ -312,6 +312,22 @@
       "dependencies": {},
       "hash": "177dbda557fd652ce7f5d1647a3621653e094373"
     },
+    "nuget.castle-core": {
+      "version": "2.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "nuget.moq": {
+      "version": "2.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "nuget.castle-core": "2.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,
